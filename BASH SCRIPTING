@@ -1,0 +1,63 @@
+
+Write a bash script that create 20 users from a csv file with default password.
+
+10 users to sys-admin group
+5 users to data-admin group
+5 users to database group
+
+FOR SYS-ADMIN GROUP
+
+STEP 1.   CREATE “Bash_script.csv” FILE
+Create a csv file named "Bash_script.csv" on window with 20 users.
+Copy the file from windows to Ubuntu server using winscp
+ 
+
+
+
+
+STEP 2.   CONFIRM THE CONTENT OF THE “Bash_script.csv” FILE ON UBUNTU SERVER
+root@pnetlab:~# cat Bash_script.csv
+ 
+
+STEP 3.  CREATE A BASH SCRIPT TO CREATE 20 USERS.
+root@pnetlab:~# nano sys-admin.sh
+#!/bin/bash
+
+GROUP="sys-admin"
+PASSWORD="admin"
+CSV_FILE="/root/Bash_script.csv"
+
+# Ensure group exists
+if ! getent group "$GROUP" > /dev/null; then
+    sudo groupadd "$GROUP"
+fi
+
+# Convert Windows line endings to Unix (remove \r if present)
+dos2unix "$CSV_FILE" 2>/dev/null || sed -i 's/\r$//' "$CSV_FILE"
+
+# Read usernames from the cleaned CSV file
+while IFS= read -r USERNAME; do
+    # Skip empty lines
+    [[ -z "$USERNAME" ]] && continue
+
+    if ! getent passwd "$USERNAME" > /dev/null; then
+        sudo useradd -m -G "$GROUP" -s /bin/bash "$USERNAME"
+        echo "$USERNAME:$PASSWORD" | sudo chpasswd
+        sudo passwd -x 10 "$USERNAME"
+        echo "User $USERNAME created with default password: $PASSWORD"
+    else
+        echo "User $USERNAME already exists."
+    fi
+done < "$CSV_FILE"
+
+
+STEP 4.  RUN THE BASH SCRIPT .
+root@pnetlab:~# ./sys-admin.sh
+
+ 
+
+
+STEP 5.  VERIFY  THE PASSWORD THAT WAS CREATED 
+root@pnetlab:~# cat /etc/passwd
+
+ 
