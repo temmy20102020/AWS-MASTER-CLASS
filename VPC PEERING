@@ -1,0 +1,21 @@
+Designing and Implementing Secure VPC Peering in AWS Single-Account Architecture
+**
+
+What is VPC peering?
+**
+
+A VPC peering connection is a networking solution that permits secure and direct communication between two virtual private clouds (VPCs) within the AWS infrastructure. This allows intercommunication among the VPC , playing the role of router in the traditional network by interconnecting the VPCs networks.
+
+Advantages of VPC peering?
+VPC peering offers a big advantage that allows connection of VPCs across different AWS accounts and AWS Regions without traversing the public internet.
+
+Another key advantage is that traffic stays within the global AWS backbone and never traverses the public internet, which reduces the risks associated with cyberattacks and vulnerabilities experienced in a public internet .
+
+There is no cost incurred while creating a VPC peering connection. All data transfer over a VPC peering connection within an Availability Zone is free, even if it's between different accounts. Charges only apply for data transfer over VPC peering connections that cross Availability Zones and Regions.
+
+OBJECTIVES
+Design and Implementation of VPC peering 
+
+
+** STEP 1 CREATE VPC **
+
